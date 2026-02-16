@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saved Jobs | KodNest Tracker</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header class="top-bar">
+        <a href="index.html" class="top-bar__brand" style="text-decoration: none; color: inherit;">KodNest Tracker</a>
+        <nav style="display: flex; gap: 24px; margin-left: auto; align-items: center;">
+            <a href="dashboard.html" style="text-decoration: none; color: var(--color-text-secondary);">Dashboard</a>
+            <a href="saved.html" style="font-weight: 600; text-decoration: none; color: var(--color-accent);">Saved</a>
+            <a href="digest.html" style="text-decoration: none; color: var(--color-text-secondary);">Digest</a>
+            <a href="settings.html" style="text-decoration: none; color: var(--color-text-secondary);">Settings</a>
+            <a href="test.html" style="text-decoration: none; color: var(--color-text-secondary);">Test</a>
+            <a href="ship.html" style="text-decoration: none; color: var(--color-text-secondary);">Ship</a>
+        </nav>
+    </header>
+
+    <!-- Context Header -->
+    <section class="context-header">
+        <h1 class="context-header__title">Saved Opportunities</h1>
+        <p class="context-header__subtitle">Your shortlisted roles. Apply when you are ready.</p>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-layout">
+
+        <section id="saved-job-list" style="width: 100%; max-width: 900px; margin: 0 auto;">
+            <!-- Jobs injected via app.js -->
+        </section>
+
+    </main>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test | KodNest Tracker</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <header class="top-bar">
+        <a href="index.html" class="top-bar__brand" style="text-decoration: none; color: inherit;">KodNest Tracker</a>
+        <nav style="display: flex; gap: 24px; margin-left: auto; align-items: center;">
+            <a href="dashboard.html" style="text-decoration: none; color: var(--color-text-secondary);">Dashboard</a>
+            <a href="saved.html" style="text-decoration: none; color: var(--color-text-secondary);">Saved</a>
+            <a href="digest.html" style="text-decoration: none; color: var(--color-text-secondary);">Digest</a>
+            <a href="settings.html" style="text-decoration: none; color: var(--color-text-secondary);">Settings</a>
+            <a href="test.html" style="font-weight: 600; text-decoration: none; color: var(--color-accent);">Test</a>
+            <a href="ship.html" style="text-decoration: none; color: var(--color-text-secondary);">Ship</a>
+        </nav>
+    </header>
+
+    <section class="context-header">
+        <h1 class="context-header__title">Pre-Flight Checklist</h1>
+        <p class="context-header__subtitle">Verify detailed system functionality before shipping.</p>
+    </section>
+
+    <main class="main-layout">
+        <section style="width: 100%; max-width: 600px; margin: 0 auto;">
+
+            <div class="card space-y-md">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <h3 style="margin: 0;">Test Status</h3>
+                    <span id="test-count-badge" class="status-badge badge--neutral" style="font-size: 14px;">0 / 10
+                        Passed</span>
+                </div>
+
+                <div id="test-warning"
+                    style="background: #fff3e0; color: #e65100; padding: 12px; border-radius: 6px; font-size: 13px; margin-bottom: 24px;">
+                    ⚠ Resolve all issues before shipping.
+                </div>
+
+                <div id="checklist-container" class="space-y-sm">
+                    <!-- Injected by app.js -->
+                </div>
+
+                <div style="margin-top: 32px; text-align: center;">
+                    <button id="reset-tests-btn" class="btn btn--secondary" style="font-size: 12px;">Reset Test
+                        Status</button>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+
+</body>
+
+</html>

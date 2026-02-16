@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Report | Placement Readiness</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <script src="engine.js"></script>
+    <style>
+        .report-grid {
+            display: grid;
+            grid-template-columns: 2.5fr 1fr;
+            gap: 24px;
+        }
+
+        .skill-tag {
+            background: #E0E0E0;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            display: inline-block;
+            margin-bottom: 8px;
+            margin-right: 8px;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 16px;
+            padding-bottom: 24px;
+            border-left: 2px solid var(--color-border);
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .timeline-item:last-child {
+            border-left: 2px solid transparent;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -7px;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            background: var(--color-accent);
+            border-radius: 50%;
+        }
+
+        @media (max-width: 768px) {
+            .report-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="top-bar">
+        <a href="../index.html" class="top-bar__brand" style="text-decoration: none; color: inherit;">KodNest
+            Premium</a>
+        <nav style="display: flex; gap: 24px; margin-left: auto; align-items: center;">
+            <a href="index.html" style="text-decoration: none; color: var(--color-text-secondary);">Scorecard</a>
+            <a href="dashboard.html" style="text-decoration: none; color: var(--color-text-secondary);">Dashboard</a>
+            <a href="analyze.html" style="font-weight: 600; text-decoration: none; color: var(--color-accent);">JD
+                Analyzer</a>
+        </nav>
+    </header>
+
+    <div style="background: white; border-bottom: 1px solid #eee; padding: 24px 0;">
+        <div class="context-header" style="padding-top: 0; padding-bottom: 0;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div>
+                    <h1 class="context-header__title" id="reportTitle">Loading...</h1>
+                    <p class="context-header__subtitle" id="reportSubtitle">Analysis Report</p>
+                </div>
+                <div style="text-align: right;">
+                    <div
+                        style="font-size: 12px; text-transform: uppercase; color: #888; letter-spacing: 0.05em; margin-bottom: 4px;">
+                        Readiness Score</div>
+                    <div id="scoreDisplay"
+                        style="font-family: var(--font-serif); font-size: 48px; font-weight: 700; color: var(--color-accent); line-height: 1; transition: color 0.3s;">
+                        --</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="main-layout" style="margin-top: 24px; display: block;">
+
+        <div class="report-grid">
+
+            <!-- LEFT COLUMN -->
+            <div class="space-y-lg">
+
+                <!-- 0. Company Intel (New) -->
+                <div class="card" id="companyIntelCard" style="border-left: 4px solid var(--color-accent);">
+                    <div class="card-header">
+                        <div class="card-title" id="intelTitle">Company Intel</div>
+                    </div>
+                    <div class="card-content">
+                        <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+                            <div style="flex: 1;">
+                                <div style="font-size: 11px; text-transform: uppercase; color: #888;">Type</div>
+                                <div id="intelType" style="font-weight: 600;">--</div>
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="font-size: 11px; text-transform: uppercase; color: #888;">Size</div>
+                                <div id="intelSize" style="font-weight: 600;">--</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="font-size: 11px; text-transform: uppercase; color: #888; margin-bottom: 4px;">
+                                Typical Hiring Focus</div>
+                            <div id="intelFocus"
+                                style="font-size: 14px; background: #f9f9f9; padding: 8px; border-radius: 4px; border: 1px dashed #ccc;">
+                                --
+                            </div>
+                        </div>
+                        <div style="margin-top: 12px; font-size: 10px; color: #999; font-style: italic;">
+                            * Demo Mode: Intel generated heuristically based on name.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 1. Detected Skills (Interactive) -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Skill Self-Assessment</div>
+                        <div class="card-description">Toggle bits to update your score. Default is "Need Practice".
+                        </div>
+                    </div>
+                    <div class="card-content" id="skillsContainer">
+                        <!-- Injected JS -->
+                    </div>
+
+                    <!-- Action Next Box -->
+                    <div id="actionNextBox"
+                        style="margin-top: 16px; background: #f9f9f9; padding: 16px; border-radius: 8px; border: 1px solid #eee; display: none;">
+                        <h4 style="font-size: 14px; margin-bottom: 8px; color: var(--color-accent);">Action Next</h4>
+                        <p style="font-size: 13px; margin-bottom: 8px;">Focus on these weak areas:</p>
+                        <div id="weakSkillsList" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">
+                        </div>
+                        <a href="#planContainer" class="btn btn--primary btn--full" style="font-size: 13px;">Start Day 1
+                            Plan Now</a>
+                    </div>
+                </div>
+
+                <!-- 2. Preparation Plan -->
+                <div class="card">
+                    <div class="card-header"
+                        style="display: flex; justify-content: space-between; align-items: center;">
+                        <div class="card-title">7-Day Preparation Plan</div>
+                        <button class="btn btn--secondary" onclick="copySection('plan')"
+                            style="padding: 4px 12px; font-size: 12px;">Copy Plan</button>
+                    </div>
+                    <div class="card-content" id="planContainer" style="margin-top: 24px;">
+                        <!-- Timeline -->
+                    </div>
+                </div>
+
+                <!-- 3. Interview Questions -->
+                <div class="card">
+                    <div class="card-header"
+                        style="display: flex; justify-content: space-between; align-items: center;">
+                        <div class="card-title">Likely Interview Questions</div>
+                        <button class="btn btn--secondary" onclick="copySection('questions')"
+                            style="padding: 4px 12px; font-size: 12px;">Copy Qs</button>
+                    </div>
+                    <div class="card-content">
+                        <ul id="questionsList"
+                            style="padding-left: 20px; line-height: 1.6; color: var(--color-text-primary);">
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT COLUMN -->
+        </div>
+        </div>
+
+        <!-- Round-wise Checklist -->
+        <div class="card">
+            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="card-title">Task Checklist</div>
+                <button class="btn btn--secondary" onclick="copySection('checklist')"
+                    style="padding: 4px 12px; font-size: 12px;">Copy</button>
+            </div>
+            <div class="card-content" id="checklistContainer">
+
+            </div>
+        </div>
+
+        <div class="space-y-sm">
+            <button class="btn btn--secondary btn--full" onclick="downloadReport()">Download Full Report
+                (TXT)</button>
+            <a href="analyze.html" class="btn btn--secondary btn--full" style="text-align: center;">New
+                Analysis</a>
+        </div>
+
+        </div>
+
+        </div>
+
+    </main>
+
+    <script>
+        let currentData = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+
+            if (id) {
+                currentData = window.JDEngine.getAnalysis(id);
+            } else {
+                const history = window.JDEngine.getHistory();
+                if (history.length > 0) currentData = history[0];
+            }
+
+            if (!currentData) {
+                document.getElementById('reportTitle').innerText = "Analysis Not Found";
+                document.querySelector('.main-layout').innerHTML = `<div style="padding: 40px; text-align: center;">ID invalid or history empty. <a href="analyze.html">Start New Analysis</a></div>`;
+                return;
+            }
+
+            // Initialize Confidence Map if not present
+            if (!currentData.skillConfidenceMap) {
+                currentData.skillConfidenceMap = {};
+                // Flatten skills
+                Object.values(currentData.skills).flat().forEach(skill => {
+                    currentData.skillConfidenceMap[skill] = 'practice'; // Default
+                });
+                // Base score comes from engine, we will dynamically adjust display but persist the "base" or "adjusted"?
+                // Let's store 'baseScore' if not stored, to allow recalc.
+                // Actually, let's say the engine stored 'score'. We treat that as the snapshot.
+                // If we want dynamic updates, we should probably store 'initialScore' separately if we want to be pure,
+                // OR just recalc score from scratch based on toggles? 
+                // The prompt says: "Start from base readinessScore... Then +2/-2".
+                // I'll stick to: Score = initialScore + modifiers.
+                // I need to know what the initial score was without modifiers. 
+                // I'll assume the current 'score' in history IS the base if no map existed.
+                if (!currentData.initialScore) {
+                    currentData.initialScore = currentData.score;
+                }
+                saveChanges();
+            }
+
+            renderReport();
+        });
+
+        function renderReport() {
+            // Render Header
+            const company = currentData.company || currentData.metadata?.company || "Unknown Company";
+            const role = currentData.role || currentData.metadata?.role || "General Role";
+            document.getElementById('reportTitle').innerText = company;
+            document.getElementById('reportSubtitle').innerHTML = `Target Role: <strong>${role}</strong> &bull; Generated on ${new Date(currentData.createdAt || currentData.timestamp).toLocaleDateString()}`;
+
+            updateScoreDisplay();
+
+            // Render Intel
+            if (currentData.intel) {
+                document.getElementById('intelType').innerText = currentData.intel.type;
+                document.getElementById('intelSize').innerText = currentData.intel.size || 'N/A';
+                document.getElementById('intelFocus').innerText = currentData.intel.focus;
+                document.getElementById('intelTitle').innerText = `${company} Info`;
+            } else {
+                document.getElementById('companyIntelCard').style.display = 'none';
+            }
+
+            // Render Round Mapping
+            if (currentData.roundMapping) {
+                document.getElementById('roundMappingContainer').innerHTML = currentData.roundMapping.map((r, index) => `
+                    <div style="position: relative; padding-left: 20px; border-left: 2px solid #eee;">
+                        <div style="position: absolute; left: -6px; top: 0; width: 10px; height: 10px; background: #ccc; border-radius: 50%;"></div>
+                        <div style="font-weight: 700; font-size: 14px; margin-bottom: 2px;">${r.name || r.roundTitle}</div>
+                        <div style="font-size: 13px; margin-bottom: 4px;">${r.details || r.focusAreas?.join(', ') || ''}</div>
+                        <div style="font-size: 12px; color: #666; background: #f4f4f4; padding: 4px 8px; border-radius: 4px; display: inline-block;">
+                    </div>
+                `).join('');
+            }
+
+            // Render Skills
+            const skillsEl = document.getElementById('skillsContainer');
+            const cats = currentData.skills;
+            if (Object.keys(cats).length === 0) {
+                skillsEl.innerHTML = `<p class="text-muted">No specific technical keywords detected.</p>`;
+            } else {
+                let html = '';
+                for (const [cat, items] of Object.entries(cats)) {
+                    // Unique items
+                    const unique = [...new Set(items)];
+                    if (unique.length === 0) continue;
+
+                    html += `<div style="margin-bottom: 16px;">
+                        <div style="font-weight: 600; text-transform: uppercase; font-size: 11px; color: #888; margin-bottom: 6px;">${cat}</div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">`;
+
+                    unique.forEach(item => {
+                        const state = currentData.skillConfidenceMap[item] || 'practice';
+                        const isKnow = state === 'know';
+                        const color = isKnow ? '#2E7D32' : '#C62828';
+                        const bg = isKnow ? '#E8F5E9' : '#FFEBEE';
+                        const border = isKnow ? '#A5D6A7' : '#EF9A9A';
+                        const icon = isKnow ? '✓' : '!';
+
+                        html += `
+                            <div onclick="toggleSkill('${item}')" 
+                                 style="
+                                    background: ${bg}; 
+                                    border: 1px solid ${border}; 
+                                    color: ${color};
+                                    padding: 6px 12px; 
+                                    border-radius: 20px; 
+                                    font-size: 13px; 
+                                    cursor: pointer; 
+                                    user-select: none;
+                                    display: flex; align-items: center; gap: 6px; transition: all 0.2s;
+                                 ">
+                                <span style="font-weight: bold;">${icon}</span>
+                                <span>${item}</span>
+                            </div>
+                        `;
+                    });
+
+                    html += `</div></div>`;
+                }
+                skillsEl.innerHTML = html;
+            }
+
+            // Update Action Next
+            updateActionNext();
+
+            // Plan
+            document.getElementById('planContainer').innerHTML = currentData.plan.map(item => `
+                <div class="timeline-item">
+                    <div>
+                        <div style="font-weight: 700; font-size: 14px; margin-bottom: 4px;">${item.day}: ${item.focus}</div>
+                        ${item.tasks.map(t => `<div style="font-size: 14px; color: #555; margin-bottom: 4px;">&bull; ${t}</div>`).join('')}
+                    </div>
+                </div>
+            `).join('');
+
+            // Questions
+            document.getElementById('questionsList').innerHTML = currentData.questions.map(q => `<li style="margin-bottom: 8px;">${q}</li>`).join('');
+
+            // Checklist
+            const cl = currentData.checklist;
+            document.getElementById('checklistContainer').innerHTML = `
+                ${renderRound('Round 1: Aptitude', cl.round1)}
+                ${renderRound('Round 2: Technical', cl.round2)}
+                ${renderRound('Round 3: Advanced', cl.round3)}
+                ${renderRound('Round 4: Managerial', cl.round4)}
+            `;
+        }
+
+        function renderRound(title, items) {
+            return `
+                <div style="margin-bottom: 24px;">
+                    <h4 style="font-size: 14px; color: var(--color-accent); margin-bottom: 8px;">${title}</h4>
+                    ${items.map(i => `
+                        <div class="checklist-item" style="padding: 8px; font-size: 13px; margin-bottom: 4px;">
+                            <input type="checkbox"> <span>${i}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        window.toggleSkill = (skill) => {
+            const current = currentData.skillConfidenceMap[skill] || 'practice';
+            currentData.skillConfidenceMap[skill] = current === 'practice' ? 'know' : 'practice';
+            saveChanges();
+            renderReport(); // Re-render to update UI
+        };
+
+        function updateScoreDisplay() {
+            // Calculate adjustments
+            let adjustment = 0;
+            if (currentData.skillConfidenceMap) {
+                Object.values(currentData.skillConfidenceMap).forEach(status => {
+                    if (status === 'know') adjustment += 2;
+                    if (status === 'practice') adjustment -= 2;
+                });
+            }
+
+            let finalScore = (currentData.initialScore || 35) + adjustment;
+            finalScore = Math.max(0, Math.min(100, finalScore)); // Clamp
+
+            // Update Data Score
+            currentData.score = finalScore;
+
+            // DOM Update
+            const display = document.getElementById('scoreDisplay');
+            display.innerText = finalScore;
+
+            // Color Logic
+            if (finalScore >= 80) display.style.color = 'var(--color-success)';
+            else if (finalScore >= 50) display.style.color = 'var(--color-warning)';
+            else display.style.color = 'var(--color-accent)';
+        }
+
+        function updateActionNext() {
+            const box = document.getElementById('actionNextBox');
+            const list = document.getElementById('weakSkillsList');
+
+            // Find "practice" skills
+            const weak = Object.entries(currentData.skillConfidenceMap)
+                .filter(([skill, status]) => status === 'practice')
+                .map(([skill]) => skill);
+
+            if (weak.length === 0) {
+                box.style.display = 'none';
+                return;
+            }
+
+            box.style.display = 'block';
+            list.innerHTML = weak.slice(0, 3).map(s => `
+                <span style="background: white; border: 1px solid #ddd; padding: 2px 8px; border-radius: 4px; font-size: 12px;">${s}</span>
+            `).join('');
+        }
+
+        function saveChanges() {
+            // Persist entire object back using Engine
+            window.JDEngine.updateEntry(currentData);
+        }
+
+        // --- Export Tools ---
+
+        window.copySection = (section) => {
+            let text = "";
+            if (section === 'plan') {
+                currentData.plan.forEach(d => {
+                    text += `[${d.day}: ${d.focus}]\n`;
+                    d.tasks.forEach(t => text += `- ${t}\n`);
+                    text += "\n";
+                });
+            } else if (section === 'questions') {
+                currentData.questions.forEach((q, i) => text += `${i + 1}. ${q}\n`);
+            } else if (section === 'checklist') {
+                Object.entries(currentData.checklist).forEach(([round, items]) => {
+                    text += `${round.toUpperCase()}:\n`;
+                    items.forEach(i => text += `[ ] ${i}\n`);
+                    text += "\n";
+                });
+            }
+
+            navigator.clipboard.writeText(text).then(() => alert("Copied to clipboard!"));
+        };
+
+        window.downloadReport = () => {
+            let text = `KODNEST PREMIUM ANALYSIS REPORT\n`;
+            text += `Company: ${currentData.metadata.company}\n`;
+            text += `Role: ${currentData.metadata.role}\n`;
+            text += `Score: ${currentData.score}\n\n`;
+
+            text += `--- 7-DAY PLAN ---\n`;
+            currentData.plan.forEach(d => {
+                text += `[${d.day}: ${d.focus}]\n`;
+                d.tasks.forEach(t => text += `- ${t}\n`);
+                text += "\n";
+            });
+
+            text += `--- CHECKLIST ---\n`;
+            Object.entries(currentData.checklist).forEach(([round, items]) => {
+                text += `${round.toUpperCase()}:\n`;
+                items.forEach(i => text += `[ ] ${i}\n`);
+                text += "\n";
+            });
+
+            text += `--- QUESTIONS ---\n`;
+            currentData.questions.forEach((q, i) => text += `${i + 1}. ${q}\n`);
+
+            const blob = new Blob([text], { type: "text/plain" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `KodNest_Report_${currentData.id}.txt`;
+            a.click();
+        };
+
+    </script>
+</body>
+
+</html>

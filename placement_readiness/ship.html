@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ship | Placement Readiness</title>
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet">
+    <!-- Global Styles -->
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        .lock-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+            text-align: center;
+            color: #555;
+        }
+
+        .lock-icon {
+            font-size: 64px;
+            margin-bottom: 24px;
+            color: var(--color-accent);
+        }
+
+        .success-screen {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- TOP BAR -->
+    <nav class="top-bar">
+        <div class="container top-bar__inner">
+            <a href="index.html" class="brand">KodNest Premium</a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Scorecard</a>
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="analyze.html" class="nav-link">JD Analyzer</a>
+                <a href="test.html" class="nav-link">Test</a>
+                <a href="ship.html" class="nav-link active">Ship</a>
+                <a href="proof.html" class="nav-link">Proof</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- CONTENT -->
+    <main class="container">
+
+        <!-- LOCKED STATE -->
+        <div id="lockedState" class="lock-screen">
+            <div class="lock-icon">🔒</div>
+            <h1 style="font-family: var(--font-serif); margin-bottom: 16px;">Shipment Locked</h1>
+            <p style="margin-bottom: 24px;">You must pass all 10 tests before shipping this release.</p>
+            <a href="test.html" class="btn btn--primary">Go to Checklist</a>
+        </div>
+
+        <!-- UNLOCKED STATE -->
+        <div id="unlockedState" class="success-screen">
+            <div style="font-size: 64px; margin-bottom: 24px;">🚀</div>
+            <h1 style="font-family: var(--font-serif); color: var(--color-success);">Ready to Ship!</h1>
+            <p>All verification tests passed. You are good to go.</p>
+            <div
+                style="margin-top: 32px; padding: 24px; background: #f9f9f9; border: 1px dashed #ccc; display: inline-block;">
+                <code>git push origin main</code>
+            </div>
+            <div style="margin-top: 24px;">
+                <a href="dashboard.html" class="btn btn--secondary">Back to Dashboard</a>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const data = JSON.parse(localStorage.getItem('prpTestChecklist') || '{}');
+            // Check if 10 items are true. (I know the IDs are t1...t10 from test.html, but length check is easier if we assume schema integrity, or better check explicit IDs)
+            // Safer: Check if 10 distinct keys have value true.
+            const passed = Object.values(data).filter(v => v === true).length;
+
+            if (passed >= 10) {
+                document.getElementById('lockedState').style.display = 'none';
+                document.getElementById('unlockedState').style.display = 'block';
+            } else {
+                document.getElementById('lockedState').style.display = 'flex';
+                document.getElementById('unlockedState').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+
+</html>

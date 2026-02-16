@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placement Readiness | KodNest Premium</title>
+    <!-- Premium Font Stack -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet">
+    <!-- Global Design System -->
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        /* Local overrides if necessary, but trying to stick to global */
+        .workspace-placeholder {
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-text-secondary);
+            border: 2px dashed var(--color-border);
+            border-radius: var(--border-radius);
+            margin-top: var(--space-md);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 1. TOP BAR -->
+    <header class="top-bar">
+        <a href="../index.html" class="top-bar__brand" style="text-decoration: none; color: inherit;">KodNest
+            Premium</a>
+        <nav style="display: flex; gap: 24px; margin-left: auto; align-items: center;">
+            <a href="index.html"
+                style="font-weight: 600; text-decoration: none; color: var(--color-accent);">Scorecard</a>
+            <a href="dashboard.html" style="text-decoration: none; color: var(--color-text-secondary);">Dashboard</a>
+            <a href="analyze.html" style="text-decoration: none; color: var(--color-text-secondary);">JD Analyzer</a>
+        </nav>
+    </header>
+
+    <!-- 2. CONTEXT HEADER -->
+    <section class="context-header">
+        <h1 class="context-header__title">Placement Readiness</h1>
+        <p class="context-header__subtitle">Assess your preparedness for upcoming recruitment drives.</p>
+    </section>
+
+    <!-- 3. MAIN LAYOUT (Split Panel) -->
+    <main class="main-layout">
+
+        <!-- Primary Workspace (70%) -->
+        <div class="primary-workspace">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                <h2 style="margin-bottom: 0;">Readiness Scorecard</h2>
+                <div id="readiness-score-display"
+                    style="font-family: var(--font-serif); font-size: 32px; font-weight: 700; color: var(--color-accent);">
+                    0%
+                </div>
+            </div>
+
+            <p>Complete the sections below to calculate your readiness score.</p>
+
+            <!-- Assessment Sections -->
+            <div class="nav-links">
+                <a href="index.html" class="nav-link active">Scorecard</a>
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="analyze.html" class="nav-link">JD Analyzer</a>
+                <a href="test.html" class="nav-link">Test</a>
+                <a href="ship.html" class="nav-link">Ship</a>
+                <a href="proof.html" class="nav-link">Proof</a>
+            </div>
+            <div class="space-y-md">
+
+                <!-- Resume Section -->
+                <div class="card">
+                    <h3 style="font-size: 18px;">1. Professional Profile (30%)</h3>
+                    <div class="space-y-sm">
+                        <label class="checklist-item">
+                            <input type="checkbox" class="metric-input" data-weight="10" data-group="resume">
+                            <span>Resume uploaded and ATS-friendly</span>
+                        </label>
+                        <label class="checklist-item">
+                            <input type="checkbox" class="metric-input" data-weight="10" data-group="resume">
+                            <span>LinkedIn profile updated with recent projects</span>
+                        </label>
+                        <label class="checklist-item">
+                            <input type="checkbox" class="metric-input" data-weight="10" data-group="resume">
+                            <span>GitHub portfolio has at least 3 pinned repositories</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Projects Section -->
+                <div class="card">
+                    <h3 style="font-size: 18px;">2. Technical Projects (30%)</h3>
+                    <div class="space-y-sm">
+                        <div class="input-group">
+                            <label class="input-label">Primary Project Name</label>
+                            <input type="text" id="project-main-input" class="input-field"
+                                placeholder="e.g. E-Commerce Platform">
+                        </div>
+                        <label class="checklist-item">
+                            <input type="checkbox" class="metric-input" data-weight="15" data-group="projects"
+                                id="project-deployed-check">
+                            <span>Project is deployed (Vercel/Netlify/Heroku)</span>
+                        </label>
+                        <label class="checklist-item">
+                            <input type="checkbox" class="metric-input" data-weight="15" data-group="projects">
+                            <span>README.md contains screenshots and setup instructions</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Skills Section -->
+                <div class="card">
+                    <h3 style="font-size: 18px;">3. Skill Competency (40%)</h3>
+                    <div class="space-y-sm">
+                        <label class="checklist-item">
+                            <input type="checkbox" class="metric-input" data-weight="10" data-group="skills">
+                            <span>Data Structures & Algorithms (Basic 50 solved)</span>
+                        </label>
+                        <label class="checklist-item">
+                            <input type="checkbox" class="metric-input" data-weight="10" data-group="skills">
+                            <span>Frontend (HTML/CSS/JS/React) proficiency</span>
+                        </label>
+                        <label class="checklist-item">
+                            <input type="checkbox" class="metric-input" data-weight="10" data-group="skills">
+                            <span>Backend/DB (Node/SQL/MongoDB) proficiency</span>
+                        </label>
+                        <label class="checklist-item">
+                            <input type="checkbox" class="metric-input" data-weight="10" data-group="skills">
+                            <span>Aptitude & Logical Reasoning</span>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Secondary Panel (30%) -->
+        <aside class="secondary-panel">
+            <div class="card">
+                <h4>Guidelines</h4>
+                <p class="text-muted" style="font-size: 14px; line-height: 1.5;">
+                    Achieve at least <strong>80%</strong> to unlock Premium Drives. Update your progress honestly.
+                </p>
+            </div>
+
+            <div class="card">
+                <h4>Action Plan</h4>
+                <div id="action-plan-content" style="font-size: 14px; color: #555;">
+                    Start by checking off your completed items.
+                </div>
+            </div>
+
+            <div class="card">
+                <h4>Current Status</h4>
+                <div class="input-group">
+                    <label class="input-label">Readiness Level</label>
+                    <div id="readiness-level-badge"
+                        style="background: #eee; padding: 12px; border-radius: 4px; font-weight: 600; text-align: center; color: #555;">
+                        Not Evaluated
+                    </div>
+                </div>
+                <button id="save-progress-btn" class="btn btn--primary btn--full">Save Progress</button>
+            </div>
+        </aside>
+
+    </main>
+
+    <!-- 4. PROOF FOOTER -->
+    <footer class="proof-footer">
+        <label class="proof-item">
+            <input type="checkbox" checked disabled> UI Built
+        </label>
+        <label class="proof-item">
+            <input type="checkbox" id="logic-proof"> Logic Working
+        </label>
+        <label class="proof-item">
+            <input type="checkbox" disabled> Test Passed
+        </label>
+        <label class="proof-item">
+            <input type="checkbox" disabled> Deployed
+        </label>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputs = document.querySelectorAll('.metric-input');
+            const scoreDisplay = document.getElementById('readiness-score-display');
+            const actionPlan = document.getElementById('action-plan-content');
+            const statusBadge = document.getElementById('readiness-level-badge');
+            const projectInput = document.getElementById('project-main-input');
+            const logicProof = document.getElementById('logic-proof');
+
+            // Load saved state
+            const savedState = JSON.parse(localStorage.getItem('kodnestValuesPlacement') || '{}');
+
+            inputs.forEach((input, index) => {
+                if (savedState[`check_${index}`]) {
+                    input.checked = true;
+                }
+                input.addEventListener('change', calculateScore);
+            });
+
+            if (savedState.projectName) {
+                projectInput.value = savedState.projectName;
+            }
+
+            calculateScore();
+
+            // Logic
+            function calculateScore() {
+                let score = 0;
+                let groups = { resume: 0, projects: 0, skills: 0 };
+
+                inputs.forEach((input) => {
+                    if (input.checked) {
+                        const weight = parseInt(input.dataset.weight);
+                        score += weight;
+                        groups[input.dataset.group]++;
+                    }
+                });
+
+                // Update UI
+                scoreDisplay.innerText = `${score}%`;
+
+                // Animate color
+                if (score >= 80) scoreDisplay.style.color = 'var(--color-success)';
+                else if (score >= 50) scoreDisplay.style.color = 'var(--color-warning)';
+                else scoreDisplay.style.color = 'var(--color-accent)';
+
+                // Update Status Badge
+                if (score >= 80) {
+                    statusBadge.style.background = '#e8f5e9';
+                    statusBadge.style.color = '#2e7d32';
+                    statusBadge.innerText = 'Exceptional';
+                } else if (score >= 50) {
+                    statusBadge.style.background = '#fff8e1';
+                    statusBadge.style.color = '#f57f17';
+                    statusBadge.innerText = 'Developing';
+                } else {
+                    statusBadge.style.background = '#ffebee';
+                    statusBadge.style.color = '#c62828';
+                    statusBadge.innerText = 'Needs Work';
+                }
+
+                // Dynamic Action Plan
+                updateActionPlan(score, groups);
+
+                // Verify logic proof if score changes
+                if (score > 0) logicProof.checked = true;
+            }
+
+            function updateActionPlan(score, groups) {
+                if (score === 100) {
+                    actionPlan.innerHTML = `<p style="color: var(--color-success);">🎉 You are fully ready! Apply to drives immediately.</p>`;
+                    return;
+                }
+
+                let tips = [];
+                if (groups.resume < 3) tips.push("• Fix your resume & LinkedIn first.");
+                if (groups.projects < 2) tips.push("• Deploy your project & document it.");
+                if (groups.skills < 4) tips.push("• Brush up your DSA & Tech skills.");
+
+                if (tips.length === 0) tips.push("• Keep reviewing your basics.");
+
+                actionPlan.innerHTML = tips.join('<br>');
+            }
+
+            // Save Progress
+            document.getElementById('save-progress-btn').addEventListener('click', () => {
+                const state = { projectName: projectInput.value };
+                inputs.forEach((input, index) => {
+                    state[`check_${index}`] = input.checked;
+                });
+
+                localStorage.setItem('kodnestValuesPlacement', JSON.stringify(state));
+
+                const btn = document.getElementById('save-progress-btn');
+                const originalText = btn.innerText;
+                btn.innerText = 'Saved!';
+                btn.style.backgroundColor = 'var(--color-success)';
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.backgroundColor = '';
+                }, 1500);
+            });
+        });
+    </script>
+</body>
+
+</html>

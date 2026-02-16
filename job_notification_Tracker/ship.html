@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ship | KodNest Tracker</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <header class="top-bar">
+        <a href="index.html" class="top-bar__brand" style="text-decoration: none; color: inherit;">KodNest Tracker</a>
+        <nav style="display: flex; gap: 24px; margin-left: auto; align-items: center;">
+            <a href="dashboard.html" style="text-decoration: none; color: var(--color-text-secondary);">Dashboard</a>
+            <a href="saved.html" style="text-decoration: none; color: var(--color-text-secondary);">Saved</a>
+            <a href="digest.html" style="text-decoration: none; color: var(--color-text-secondary);">Digest</a>
+            <a href="settings.html" style="text-decoration: none; color: var(--color-text-secondary);">Settings</a>
+            <a href="test.html" style="text-decoration: none; color: var(--color-text-secondary);">Test</a>
+            <a href="ship.html" style="font-weight: 600; text-decoration: none; color: var(--color-accent);">Ship</a>
+        </nav>
+    </header>
+
+    <main class="main-layout" style="display: flex; align-items: center; justify-content: center; min-height: 60vh;">
+
+        <!-- LOCKED STATE -->
+        <div id="ship-locked" style="text-align: center; max-width: 500px;">
+            <div style="font-size: 48px; margin-bottom: 16px;">🔒</div>
+            <h2 style="font-family: var(--font-serif); margin-bottom: 16px;">Shipment Locked</h2>
+            <p style="color: #666; margin-bottom: 24px;">You must verify all 10 items in the Test Checklist before you
+                can ship this release.</p>
+            <a href="test.html" class="btn btn--primary">Go to Checklist</a>
+        </div>
+
+        <!-- UNLOCKED STATE -->
+        <div id="ship-unlocked" style="text-align: center; max-width: 500px; display: none;">
+            <div style="font-size: 48px; margin-bottom: 16px;">🚀</div>
+            <h2 style="font-family: var(--font-serif); margin-bottom: 16px;">Ready to Ship</h2>
+            <p style="color: #666; margin-bottom: 24px;">All systems go. Quality assurance verification complete.</p>
+            <button class="btn btn--primary" onclick="alert('🚀 Shipped! (Simulation)')">Ship Release V1.0</button>
+        </div>
+
+    </main>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+
+</body>
+
+</html>

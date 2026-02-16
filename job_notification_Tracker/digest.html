@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digest | KodNest Tracker</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <header class="top-bar">
+        <a href="index.html" class="top-bar__brand" style="text-decoration: none; color: inherit;">KodNest Tracker</a>
+        <nav style="display: flex; gap: 24px; margin-left: auto; align-items: center;">
+            <a href="dashboard.html" style="text-decoration: none; color: var(--color-text-secondary);">Dashboard</a>
+            <a href="saved.html" style="text-decoration: none; color: var(--color-text-secondary);">Saved</a>
+            <a href="digest.html"
+                style="font-weight: 600; text-decoration: none; color: var(--color-accent);">Digest</a>
+            <a href="settings.html" style="text-decoration: none; color: var(--color-text-secondary);">Settings</a>
+            <a href="test.html" style="text-decoration: none; color: var(--color-text-secondary);">Test</a>
+            <a href="ship.html" style="text-decoration: none; color: var(--color-text-secondary);">Ship</a>
+        </nav>
+    </header>
+
+    <section class="context-header">
+        <h1 class="context-header__title">Daily Digest</h1>
+        <p class="context-header__subtitle">Your 9AM briefing.</p>
+    </section>
+
+    <main class="main-layout">
+        <section style="width: 100%; max-width: 700px; margin: 0 auto;">
+
+            <!-- Simulator Control -->
+            <div
+                style="background: #fff; padding: 16px; border: 1px solid var(--color-border); border-radius: 8px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h3 style="font-size: 16px; margin: 0;">Digest Simulator</h3>
+                    <p style="font-size: 12px; color: #666; margin: 0;">Demo Mode: Daily 9AM trigger simulated manually.
+                    </p>
+                </div>
+                <button id="generate-digest-btn" class="btn btn--primary">Generate Today's 9AM Digest</button>
+            </div>
+
+            <!-- Content Area -->
+            <div id="digest-container">
+                <!-- Injected via app.js -->
+            </div>
+
+            <!-- Actions -->
+            <div id="digest-actions" style="margin-top: 24px; display: none; gap: 16px; justify-content: center;">
+                <button id="copy-digest-btn" class="btn btn--secondary">Copy to Clipboard</button>
+                <button id="email-digest-btn" class="btn btn--secondary">Create Email Draft</button>
+            </div>
+
+        </section>
+    </main>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+
+</body>
+
+</html>

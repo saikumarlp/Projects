@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proof of Work | Placement Readiness</title>
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet">
+    <!-- Global Styles -->
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        .step-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .step-status {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 99px;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: #eee;
+            color: #666;
+        }
+
+        .status-completed {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .shipped-banner {
+            background: #111;
+            color: #fff;
+            padding: 40px;
+            text-align: center;
+            border-radius: 8px;
+            margin-top: 32px;
+            display: none;
+        }
+
+        .quote {
+            font-family: var(--font-serif);
+            font-size: 24px;
+            line-height: 1.4;
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- TOP BAR -->
+    <nav class="top-bar">
+        <div class="container top-bar__inner">
+            <a href="index.html" class="brand">KodNest Premium</a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Scorecard</a>
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="analyze.html" class="nav-link">JD Analyzer</a>
+                <a href="test.html" class="nav-link">Test</a>
+                <a href="ship.html" class="nav-link">Ship</a>
+                <a href="proof.html" class="nav-link active">Proof</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- CONTENT -->
+    <main class="container" style="padding-top: 32px; padding-bottom: 80px;">
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
+            <div>
+                <h1 style="margin: 0; font-family: var(--font-serif);">Proof of Work</h1>
+                <p style="color: #666; margin-top: 8px;">Finalize your build and generate the submission.</p>
+            </div>
+            <div id="projectStatusBadge"
+                style="padding: 8px 16px; background: #eee; border-radius: 4px; font-weight: 600; color: #666;">
+                In Progress
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
+
+            <!-- LEFT: STEPS -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Development Steps</div>
+                </div>
+                <div class="card-content">
+                    <div id="stepsContainer">
+                        <!-- Injected -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT: ARTIFACTS -->
+            <div class="space-y-lg">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Artifact Submission</div>
+                    </div>
+                    <div class="card-content space-y-md">
+                        <div class="input-group">
+                            <label class="input-label">Lovable Project Link <span style="color:red">*</span></label>
+                            <input type="url" id="lovableLink" class="input-field" placeholder="https://lovable.dev/..."
+                                required>
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">GitHub Repository <span style="color:red">*</span></label>
+                            <input type="url" id="githubLink" class="input-field" placeholder="https://github.com/..."
+                                required>
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Deployed URL <span style="color:red">*</span></label>
+                            <input type="url" id="deployedLink" class="input-field" placeholder="https://..." required>
+                        </div>
+                        <button id="saveArtifactsBtn" class="btn btn--secondary btn--full">Save Artifacts</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Final Export</div>
+                    </div>
+                    <div class="card-content">
+                        <p style="font-size: 13px; color: #666; margin-bottom: 16px;">
+                            Generate the official submission text once all steps are complete.
+                        </p>
+                        <button id="copySubmissionBtn" class="btn btn--primary btn--full" disabled>
+                            Copy Final Submission
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SHIPPED MESSAGE -->
+        <div id="shippedMessage" class="shipped-banner">
+            <div class="quote">
+                "You built a real product.<br>
+                Not a tutorial. Not a clone.<br>
+                A structured tool that solves a real problem."
+            </div>
+            <div style="opacity: 0.8; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">
+                This is your proof of work.
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const stepsContainer = document.getElementById('stepsContainer');
+            const saveBtn = document.getElementById('saveArtifactsBtn');
+            const copyBtn = document.getElementById('copySubmissionBtn');
+            const statusBadge = document.getElementById('projectStatusBadge');
+            const shippedMessage = document.getElementById('shippedMessage');
+
+            // Inputs
+            const lovableInput = document.getElementById('lovableLink');
+            const githubInput = document.getElementById('githubLink');
+            const deployedInput = document.getElementById('deployedLink');
+
+            // Load Data
+            const scorecardData = JSON.parse(localStorage.getItem('kodnestValuesPlacement') || '{}');
+            const historyData = JSON.parse(localStorage.getItem('kodnestAnalysisHistory') || '[]');
+            const testData = JSON.parse(localStorage.getItem('prpTestChecklist') || '{}');
+            const artifacts = JSON.parse(localStorage.getItem('prp_final_submission') || '{}');
+
+            // Restore Inputs
+            if (artifacts.lovable) lovableInput.value = artifacts.lovable;
+            if (artifacts.github) githubInput.value = artifacts.github;
+            if (artifacts.deployed) deployedInput.value = artifacts.deployed;
+
+            // Define 8 Steps Status
+            const steps = [
+                { name: "Scorecard Started", completed: Object.keys(scorecardData).length > 0 },
+                { name: "Project Name Set", completed: !!scorecardData.projectName },
+                { name: "Resume & Profile Updated", completed: (scorecardData.check_0 || scorecardData.check_1 || scorecardData.check_2) },
+                { name: "JD Analysis Run", completed: historyData.length > 0 },
+                { name: "Company Intel Detected", completed: historyData.some(h => h.intel) },
+                { name: "Preparation Plan Generated", completed: historyData.some(h => h.plan7Days || h.plan) },
+                { name: "Readiness Score Active", completed: historyData.some(h => h.finalScore !== undefined || h.score !== undefined) },
+                { name: "Quality Tests Passed (10/10)", completed: Object.values(testData).filter(v => v === true).length === 10 }
+            ];
+
+            // Render Steps
+            let allStepsComplete = true;
+            stepsContainer.innerHTML = steps.map(step => {
+                if (!step.completed) allStepsComplete = false;
+                return `
+                    <div class="step-item">
+                        <span style="font-weight: 500; color: ${step.completed ? '#111' : '#888'}">${step.name}</span>
+                        <span class="step-status ${step.completed ? 'status-completed' : 'status-pending'}">
+                            ${step.completed ? 'Completed' : 'Pending'}
+                        </span>
+                    </div>
+                `
+            }).join('');
+
+            // Check Artifacts
+            const linksValid = (url) => url && url.startsWith('http');
+            const allArtifactsPresent = linksValid(artifacts.lovable) && linksValid(artifacts.github) && linksValid(artifacts.deployed);
+
+            // Update Status
+            const isShipped = allStepsComplete && allArtifactsPresent;
+
+            if (isShipped) {
+                statusBadge.innerText = "Shipped";
+                statusBadge.style.background = "#111";
+                statusBadge.style.color = "#fff";
+                shippedMessage.style.display = "block";
+                copyBtn.disabled = false;
+                copyBtn.innerText = "Copy Final Submission";
+            } else {
+                statusBadge.innerText = "In Progress";
+                copyBtn.disabled = true;
+                copyBtn.innerText = "Complete All Steps & Artifacts";
+            }
+
+            // Save Handler
+            saveBtn.addEventListener('click', () => {
+                const data = {
+                    lovable: lovableInput.value,
+                    github: githubInput.value,
+                    deployed: deployedInput.value
+                };
+
+                // Simple validation
+                if (!linksValid(data.lovable) || !linksValid(data.github) || !linksValid(data.deployed)) {
+                    alert("Please enter valid URLs (starting with http/https) for all fields.");
+                    return;
+                }
+
+                localStorage.setItem('prp_final_submission', JSON.stringify(data));
+                location.reload(); // Refresh to update status
+            });
+
+            // Copy Handler
+            copyBtn.addEventListener('click', () => {
+                const text = `
+------------------------------------------
+Placement Readiness Platform — Final Submission
+
+Lovable Project: ${artifacts.lovable}
+GitHub Repository: ${artifacts.github}
+Live Deployment: ${artifacts.deployed}
+
+Core Capabilities:
+- JD skill extraction (deterministic)
+- Round mapping engine
+- 7-day prep plan
+- Interactive readiness scoring
+- History persistence
+------------------------------------------
+`;
+                navigator.clipboard.writeText(text.trim()).then(() => {
+                    alert("Submission copied to clipboard!");
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

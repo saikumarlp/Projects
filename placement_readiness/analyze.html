@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analyze JD | Placement Readiness</title>
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet">
+    <!-- Global Styles -->
+    <link rel="stylesheet" href="../styles.css">
+    <!-- Engine -->
+    <script src="engine.js"></script>
+
+    <style>
+        .analysis-input-area {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .history-list {
+            display: grid;
+            gap: 16px;
+        }
+
+        .history-item {
+            background: white;
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius);
+            padding: 16px;
+            transition: all 0.2s;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .history-item:hover {
+            border-color: var(--color-accent);
+            transform: translateX(4px);
+        }
+
+        .score-badge {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            background: #eee;
+            color: #333;
+        }
+
+        .score-badge.high {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .score-badge.med {
+            background: #fff8e1;
+            color: #f9a825;
+        }
+
+        .score-badge.low {
+            background: #ffebee;
+            color: #c62828;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- TOP BAR -->
+    <header class="top-bar">
+        <a href="../index.html" class="top-bar__brand" style="text-decoration: none; color: inherit;">KodNest
+            Premium</a>
+        <nav style="display: flex; gap: 24px; margin-left: auto; align-items: center;">
+            <a href="index.html" style="text-decoration: none; color: var(--color-text-secondary);">Scorecard</a>
+            <a href="dashboard.html" style="text-decoration: none; color: var(--color-text-secondary);">Dashboard</a>
+            <a href="analyze.html" style="font-weight: 600; text-decoration: none; color: var(--color-accent);">JD
+                Analyzer</a>
+        </nav>
+    </header>
+
+    <!-- CONTEXT HEADER -->
+    <section class="context-header">
+        <h1 class="context-header__title">Analyze Job Bundle</h1>
+        <p class="context-header__subtitle">Paste a Job Description to generate a tailored preparation plan.</p>
+    </section>
+
+    <main class="main-layout" style="display: block;">
+
+        <div class="analysis-input-area">
+
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Scorecard</a>
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="analyze.html" class="nav-link active">JD Analyzer</a>
+                <a href="test.html" class="nav-link">Test</a>
+                <a href="ship.html" class="nav-link">Ship</a>
+                <a href="proof.html" class="nav-link">Proof</a>
+            </div>
+
+            <!-- INPUT FORM -->
+            <div class="card" style="margin-bottom: 40px;">
+                <div class="card-header">
+                    <div class="card-title">New Analysis</div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                    <div class="input-group">
+                        <label class="input-label">Company Name</label>
+                        <input type="text" id="companyInput" class="input-field" placeholder="e.g. Google">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Role Title</label>
+                        <input type="text" id="roleInput" class="input-field" placeholder="e.g. Frontend Engineer">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Job Description Text <span style="color: red;">*</span></label>
+                    <textarea id="jdInput" class="input-field" style="min-height: 200px; resize: vertical;"
+                        placeholder="Paste the full JD here..."></textarea>
+                    <div id="jdWarning"
+                        style="color: #d32f2f; font-size: 13px; margin-top: 8px; display: none; background: #ffebee; padding: 8px; border-radius: 4px;">
+                        This JD is too short to analyze deeply. Paste full JD for better output.
+                    </div>
+                </div>
+
+                <div style="text-align: right; margin-top: 24px;">
+                    <button class="btn btn--primary" id="analyzeBtn" style="min-width: 150px;">Analyze JD</button>
+                </div>
+            </div>
+
+            <!-- HISTORY LIST -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h3 style="margin-bottom: 0;">Recent Analysis</h3>
+                <button class="btn btn--secondary" id="clearHistory" style="font-size: 12px; padding: 6px 12px;">Clear
+                    History</button>
+            </div>
+
+            <div id="historyContainer" class="history-list">
+                <!-- History items injected here -->
+                <div class="empty-state">
+                    <div class="empty-state__title">No History</div>
+                    <p class="empty-state__text">Your past analyses will appear here.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const analyzeBtn = document.getElementById('analyzeBtn');
+            const historyContainer = document.getElementById('historyContainer');
+            const clearHistoryBtn = document.getElementById('clearHistory');
+            const jdInput = document.getElementById('jdInput');
+            const jdWarning = document.getElementById('jdWarning');
+
+            // Render History on Load
+            renderHistory();
+
+            // Handle Analyze
+            analyzeBtn.addEventListener('click', () => {
+                const company = document.getElementById('companyInput').value;
+                const role = document.getElementById('roleInput').value;
+                const jdText = jdInput.value;
+
+                jdWarning.style.display = 'none';
+
+                if (!jdText || jdText.trim().length === 0) {
+                    alert("Job Description is required.");
+                    return;
+                }
+
+                if (jdText.length < 200) {
+                    jdWarning.style.display = 'block';
+                    return;
+                }
+
+                // Call Engine
+                const result = window.JDEngine.analyze(jdText, company, role);
+
+                // Redirect to report
+                window.location.href = `report.html?id=${result.id}`;
+            });
+
+            // Handle Review
+            window.viewReport = (id) => {
+                window.location.href = `report.html?id=${id}`;
+            };
+
+            // Handle Clear
+            clearHistoryBtn.addEventListener('click', () => {
+                if (confirm("Clear all history?")) {
+                    localStorage.removeItem('kodnestAnalysisHistory');
+                    renderHistory();
+                }
+            });
+
+            function renderHistory() {
+                const history = window.JDEngine.getHistory();
+
+                if (history.length === 0) {
+                    historyContainer.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state__title">No History</div>
+                            <p class="empty-state__text">Your past analyses will appear here.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                historyContainer.innerHTML = history.map(item => {
+                    let badgeClass = 'low';
+                    if (item.score >= 70) badgeClass = 'high';
+                    else if (item.score >= 50) badgeClass = 'med';
+
+                    const date = new Date(item.timestamp).toLocaleDateString();
+
+                    return `
+                        <div class="history-item" onclick="viewReport('${item.id}')">
+                            <div>
+                                <div style="font-weight: 600; font-family: var(--font-serif); font-size: 16px;">
+                                    ${item.metadata.company || 'Unknown Company'}
+                                    <span style="color: var(--color-text-secondary); font-family: var(--font-sans); font-size: 14px; font-weight: 400;">
+                                        &bull; ${item.metadata.role || 'General Role'}
+                                    </span>
+                                </div>
+                                <div style="font-size: 12px; color: #888; margin-top: 4px;">
+                                    ${date} &bull; ${Object.keys(item.skills).length} skill categories detected
+                                </div>
+                            </div>
+                            <div class="score-badge ${badgeClass}">
+                                ${item.score}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Placement Readiness</title>
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet">
+    <!-- Global Styles -->
+    <link rel="stylesheet" href="../styles.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* Local Grid Layout */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: var(--space-lg);
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Circular Progress */
+        .progress-ring {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            margin: 0 auto;
+        }
+
+        .progress-ring__circle-bg {
+            fill: none;
+            stroke: #eee;
+            stroke-width: 12;
+        }
+
+        .progress-ring__circle {
+            fill: none;
+            stroke: var(--color-accent);
+            stroke-width: 12;
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+            transition: stroke-dashoffset 1s ease-in-out;
+            stroke-dasharray: 440;
+            /* 2 * PI * 70 */
+            stroke-dashoffset: 440;
+        }
+
+        .progress-ring__text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .progress-ring__value {
+            font-family: var(--font-serif);
+            font-size: 36px;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .progress-ring__label {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            margin-top: 4px;
+        }
+
+        /* Weekly Goals */
+        .week-grid {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 12px;
+        }
+
+        .day-circle {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #eee;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+        }
+
+        .day-circle.active {
+            background: var(--color-accent);
+            color: white;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #eee;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .progress-bar__fill {
+            height: 100%;
+            background: var(--color-accent);
+            width: 0%;
+            transition: width 1s ease;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 1. TOP BAR -->
+    <header class="top-bar">
+        <a href="../index.html" class="top-bar__brand" style="text-decoration: none; color: inherit;">KodNest
+            Premium</a>
+        <nav style="display: flex; gap: 24px; margin-left: auto; align-items: center;">
+            <a href="index.html" style="text-decoration: none; color: var(--color-text-secondary);">Scorecard</a>
+            <a href="dashboard.html"
+                style="font-weight: 600; text-decoration: none; color: var(--color-accent);">Dashboard</a>
+            <a href="analyze.html" style="text-decoration: none; color: var(--color-text-secondary);">JD Analyzer</a>
+        </nav>
+    </header>
+
+    <!-- 2. CONTEXT HEADER -->
+    <section class="context-header">
+        <h1 class="context-header__title">Student Dashboard</h1>
+        <p class="context-header__subtitle">Track your skills, goals, and upcoming schedule.</p>
+    </section>
+
+    <!-- 3. MAIN WORKSPACE -->
+    <main class="main-layout" style="display: block;"> <!-- Override flex for grid -->
+
+        <div class="dashboard-grid">
+
+            <!-- LEFT COLUMN (Main Stats) -->
+            <div class="space-y-lg" style="display: flex; flex-direction: column; gap: var(--space-lg);">
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg);">
+
+                    <!-- 1. Overall Readiness -->
+                    <div class="card"
+                        style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <div class="card-header" style="width: 100%; text-align: center;">
+                            <div class="card-title">Overall Readiness</div>
+                        </div>
+                        <div class="card-content">
+                            <div class="progress-ring">
+                                <svg width="160" height="160">
+                                    <circle class="progress-ring__circle-bg" cx="80" cy="80" r="70"></circle>
+                                    <circle class="progress-ring__circle" cx="80" cy="80" r="70" id="readiness-circle">
+                                    </circle>
+                                </svg>
+                                <div class="progress-ring__text">
+                                    <div class="progress-ring__value" id="readiness-value">0</div>
+                                    <div class="progress-ring__label">Score</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. Weekly Goals -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Weekly Goals</div>
+                            <div class="card-description">Problem Solving Consistency</div>
+                        </div>
+                        <div class="card-content">
+                            <div
+                                style="display: flex; justify-content: space-between; font-size: 14px; font-weight: 500; margin-bottom: 4px;">
+                                <span>Problems Solved</span>
+                                <span>12 / 20</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-bar__fill" style="width: 60%;"></div>
+                            </div>
+
+                            <div class="week-grid">
+                                <div class="day-circle active">M</div>
+                                <div class="day-circle active">T</div>
+                                <div class="day-circle active">W</div>
+                                <div class="day-circle">T</div>
+                                <div class="day-circle active">F</div>
+                                <div class="day-circle">S</div>
+                                <div class="day-circle">S</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- 2. Skill Breakdown (Radar) -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Skill Breakdown</div>
+                    </div>
+                    <div class="card-content" style="height: 300px; position: relative;">
+                        <canvas id="skillChart"></canvas>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT COLUMN (Side Panel) -->
+            <div class="space-y-lg" style="display: flex; flex-direction: column; gap: var(--space-lg);">
+
+                <!-- 3. Continue Practice -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Continue Practice</div>
+                    </div>
+                    <div class="card-content">
+                        <div style="font-weight: 500; margin-bottom: 4px;">Dynamic Programming</div>
+                        <div style="font-size: 13px; color: #666; margin-bottom: 8px;">Mastering 1D DP Arrays</div>
+
+                        <div
+                            style="display: flex; justify-content: space-between; font-size: 12px; color: #555; margin-bottom: 4px;">
+                            <span>Progress</span>
+                            <span>3 / 10</span>
+                        </div>
+                        <div class="progress-bar" style="margin-bottom: 16px;">
+                            <div class="progress-bar__fill" style="width: 30%;"></div>
+                        </div>
+
+                        <button class="btn btn--primary btn--full">Continue Module</button>
+                    </div>
+                </div>
+
+                <!-- 5. Upcoming Assessments -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Upcoming Assessments</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="space-y-sm">
+                            <!-- Item 1 -->
+                            <div
+                                style="display: flex; gap: 12px; align-items: flex-start; padding-bottom: 12px; border-bottom: 1px solid #f0f0f0;">
+                                <div
+                                    style="background: #ffebee; color: #c62828; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 18px;">
+                                    D
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600; font-size: 14px;">DSA Mock Test</div>
+                                    <div style="font-size: 12px; color: #666;">Tomorrow, 10:00 AM</div>
+                                </div>
+                            </div>
+
+                            <!-- Item 2 -->
+                            <div
+                                style="display: flex; gap: 12px; align-items: flex-start; padding-bottom: 12px; border-bottom: 1px solid #f0f0f0;">
+                                <div
+                                    style="background: #e3f2fd; color: #1565c0; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 18px;">
+                                    S
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600; font-size: 14px;">System Design Review</div>
+                                    <div style="font-size: 12px; color: #666;">Wed, 2:00 PM</div>
+                                </div>
+                            </div>
+
+                            <!-- Item 3 -->
+                            <div style="display: flex; gap: 12px; align-items: flex-start;">
+                                <div
+                                    style="background: #e8f5e9; color: #2e7d32; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 18px;">
+                                    H
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600; font-size: 14px;">HR Interview Prep</div>
+                                    <div style="font-size: 12px; color: #666;">Friday, 11:00 AM</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Animate Readiness Circle
+            const targetScore = 72;
+            const circle = document.getElementById('readiness-circle');
+            const value = document.getElementById('readiness-value');
+
+            const radius = 70;
+            const circumference = 2 * Math.PI * radius;
+
+            // Calculate offset (empty part)
+            // If score is 72%, we want 72% filled.
+            // Offset = Circumference - (Score / 100 * Circumference)
+            const offset = circumference - (targetScore / 100 * circumference);
+
+            setTimeout(() => {
+                circle.style.strokeDashoffset = offset;
+
+                // Animate numbers
+                let current = 0;
+                const interval = setInterval(() => {
+                    if (current >= targetScore) clearInterval(interval);
+                    value.innerText = current;
+                    current++;
+                }, 10);
+
+            }, 300);
+
+            // 2. Render Radar Chart
+            const ctx = document.getElementById('skillChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['DSA', 'System Design', 'Communication', 'Resume', 'Aptitude'],
+                    datasets: [{
+                        label: 'Current Skill Level',
+                        data: [75, 60, 80, 85, 70],
+                        backgroundColor: 'rgba(139, 0, 0, 0.2)', // Accent color opacity
+                        borderColor: '#8B0000', // Accent color
+                        borderWidth: 2,
+                        pointBackgroundColor: '#8B0000'
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            angleLines: {
+                                color: '#eee'
+                            },
+                            grid: {
+                                color: '#eee'
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 100,
+                            ticks: {
+                                stepSize: 20
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    maintainAspectRatio: false
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
