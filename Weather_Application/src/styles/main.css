@@ -1,0 +1,239 @@
+:root {
+    --bg-color-light: #f0f2f5;
+    --bg-color-dark: #1a1a1a;
+    --text-color-light: #333;
+    --text-color-dark: #f0f0f0;
+    --card-bg-light: #ffffff;
+    --card-bg-dark: #2d2d2d;
+    --primary-color: #007bff;
+    --accent-color: #ff6b6b;
+    --shadow-light: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-dark: 0 4px 6px rgba(0, 0, 0, 0.5);
+    --font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-family);
+    background-color: var(--bg-color-light);
+    color: var(--text-color-light);
+    transition: background-color 0.3s, color 0.3s;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body.dark-mode {
+    background-color: var(--bg-color-dark);
+    color: var(--text-color-dark);
+}
+
+.app-container {
+    width: 90%;
+    max-width: 800px;
+    background: var(--card-bg-light);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow-light);
+    transition: background 0.3s, box-shadow 0.3s;
+    text-align: center;
+}
+
+body.dark-mode .app-container {
+    background: var(--card-bg-dark);
+    box-shadow: var(--shadow-dark);
+}
+
+/* Header & Controls */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+h1 {
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+.controls button {
+    background: none;
+    border: 1px solid currentColor;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 0.5rem;
+    color: inherit;
+    transition: background 0.2s, color 0.2s;
+}
+
+.controls button:hover {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* Search Bar */
+.search-bar {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.search-bar input {
+    flex: 1;
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.search-bar button {
+    padding: 0.8rem 1.5rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.2s;
+}
+
+.search-bar button:hover {
+    background-color: #0056b3;
+}
+
+/* Current Weather */
+.current-weather {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: rgba(0, 123, 255, 0.1);
+    border-radius: 8px;
+}
+
+.weather-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    gap: 1rem;
+}
+
+.weather-main {
+    text-align: center;
+}
+
+.weather-main img {
+    width: 100px;
+    height: 100px;
+}
+
+.temp {
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.details p {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+}
+
+/* Forecast */
+.forecast-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem;
+    padding-bottom: 1rem;
+}
+
+.forecast-card {
+    min-width: 120px;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    text-align: center;
+}
+
+body.dark-mode .forecast-card {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.forecast-card img {
+    width: 50px;
+    height: 50px;
+}
+
+/* History */
+.history-container {
+    margin-top: 2rem;
+    text-align: left;
+}
+
+.history-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.history-item {
+    background: #eee;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+}
+
+.history-item:hover {
+    background: #ddd;
+}
+
+body.dark-mode .history-item {
+    background: #444;
+    color: #fff;
+}
+
+body.dark-mode .history-item:hover {
+    background: #555;
+}
+
+/* Loader */
+.loader {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: var(--primary-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 2rem auto;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Error */
+.error-message {
+    color: var(--accent-color);
+    margin: 1rem 0;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .app-container {
+        width: 95%;
+        padding: 1rem;
+    }
+
+    .temp {
+        font-size: 2.5rem;
+    }
+}

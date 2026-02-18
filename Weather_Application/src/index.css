@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+body {
+  font-family: 'Inter', sans-serif;
+  color: white;
+  min-height: 100vh;
+  transition: background 0.5s ease;
+}
+
+/* Background Gradients */
+.bg-default {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.bg-sunny {
+  background: linear-gradient(135deg, #fce38a 0%, #f38181 100%);
+}
+
+.bg-rain {
+  background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+}
+
+.bg-night {
+  background: linear-gradient(135deg, #232526 0%, #414345 100%);
+}
+
+/* Glassmorphism utilities */
+.glass-card {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: white;
+  border-radius: 15px;
+}
+
+.glass-input {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  color: white !important;
+  border-radius: 50px !important;
+}
+
+.glass-input:focus {
+  background: rgba(255, 255, 255, 0.25) !important;
+  box-shadow: none !important;
+}
+
+.glass-input::placeholder {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.glass-btn {
+  background: rgba(255, 255, 255, 0.3) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  color: white !important;
+  transition: all 0.3s;
+  border-radius: 50px !important;
+}
+
+.glass-btn:hover {
+  background: rgba(255, 255, 255, 0.45) !important;
+  border-color: white !important;
+}
+
+/* Scrollbar hiding for horizontal forecast */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
